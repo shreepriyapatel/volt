@@ -1,0 +1,6 @@
+{
+  "name": "VoltGrid - EV Station Management & Expansion",
+  "description": "EV charging station planning with Vahan Dashboard EV ownership density scoring, real-time monitoring, predictive load management, investor analytics, and driver navigation.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,230 @@
+import { PredictiveMaintenanceAlert, MaintenanceWorkOrder, SensorTelemetryHistoryPoint, UserRoleProfile, RoleAuditLog } from '../types';
+
+export const USER_ROLE_PROFILES: Record<string, UserRoleProfile> = {
+  operator: {
+    id: 'USR-OP-01',
+    name: 'Elena Rostova',
+    email: 'e.rostova@voltgrid.io',
+    title: 'Lead Grid Operations Manager',
+    role: 'operator',
+    permissions: [
+      'telemetry:read',
+      'station:write',
+      'pricing:manage',
+      'maintenance:dispatch',
+      'remote:control',
+    ],
+    restrictedFeatures: ['Investment Portfolio CapEx/OpEx Exports', 'Personal Driver Wallet Balances'],
+  },
+  investor: {
+    id: 'USR-INV-02',
+    name: 'Marcus Vance',
+    email: 'm.vance@apexcleantech.com',
+    title: 'Managing Director, Infrastructure Fund',
+    role: 'investor',
+    permissions: ['telemetry:read', 'financials:view', 'expansion:plan'],
+    restrictedFeatures: [
+      'Remote Charger Reboots & Control',
+      'Dynamic Price Overrides',
+      'Driver Payment Refunds',
+    ],
+  },
+  driver: {
+    id: 'USR-DRV-03',
+    name: 'Sophia Chen',
+    email: 'sophia.chen@evdriver.net',
+    title: 'EV Driver (Tata Nexon EV Max)',
+    role: 'driver',
+    permissions: ['telemetry:read', 'wallet:manage'],
+    restrictedFeatures: [
+      'Station Telemetry Diagnostics',
+      'Grid Load Balancer Overrides',
+      'CapEx / Yield Statements',
+    ],
+  },
+  maintenance: {
+    id: 'USR-TECH-04',
+    name: 'Alex Rivera',
+    email: 'a.rivera@voltgrid-field.com',
+    title: 'Senior High-Voltage Field Specialist',
+    role: 'maintenance',
+    permissions: [
+      'telemetry:read',
+      'maintenance:execute',
+      'station:write',
+      'remote:control',
+    ],
+    restrictedFeatures: ['Surge Tariff Management', 'Financial ROI Projections', 'Site Land Acquisitions'],
+  },
+  planner: {
+    id: 'USR-PLN-05',
+    name: 'David K. O\'Connor',
+    email: 'd.oconnor@voltgrid.io',
+    title: 'Network Expansion Strategist',
+    role: 'planner',
+    permissions: ['telemetry:read', 'expansion:plan', 'financials:view'],
+    restrictedFeatures: ['Live Port Shutdowns', 'Driver Billing Refunds'],
+  },
+};
+
+export const INITIAL_PREDICTIVE_ALERTS: PredictiveMaintenanceAlert[] = [
+  {
+    id: 'ALT-HW3-01',
+    stationId: 'STN-AIRPORT-KIA-04',
+    stationName: 'Kempegowda International Airport (BLR) Transit HyperCharger',
+    portId: 'HW3',
+    portNumber: 3,
+    component: 'Liquid Coolant Pump Loop #2',
+    failureProbabilityPct: 88,
+    predictedTimeframe: 'Within 24-48 Hours',
+    severity: 'Critical',
+    rootCauseAnalysis:
+      'Coolant loop line pressure dropped from 28.5 PSI to 14.2 PSI while junction temperature spiked to 72°C under 300A load. Impeller seal wear and cavitation detected.',
+    sensorTelemetrySnapshot: {
+      junctionTempC: 72,
+      coolantPressurePsi: 14.2,
+      vibrationMs2: 3.8,
+      voltageFluctuationPct: 4.1,
+      currentRipplePct: 5.8,
+    },
+    recommendedAction:
+      'Auto-throttle Port HW3 to 150kW. Dispatch Field Tech to swap coolant pump module and replace glycol O-ring seals.',
+    suggestedParts: ['350kW Glycol Coolant Pump Mod', 'High-Temp Viton O-Ring Set', '5L Dielectric Coolant'],
+    status: 'active',
+    createdAt: 'Today, 08:30 AM',
+  },
+  {
+    id: 'ALT-AP2-02',
+    stationId: 'STN-BELLANDUR-02',
+    stationName: 'Outer Ring Road Bellandur Eco-Gateway',
+    portId: 'AP2',
+    portNumber: 2,
+    component: 'DC Power Inverter Capacitor Bank',
+    failureProbabilityPct: 74,
+    predictedTimeframe: 'Within 3-5 Days',
+    severity: 'High',
+    rootCauseAnalysis:
+      'Current ripple frequency harmonic increased by 42% on DC Bus 2. Capacitor electrolyte ESR degradation indicates impending AC/DC inverter bridge ripple fault.',
+    sensorTelemetrySnapshot: {
+      junctionTempC: 61,
+      coolantPressurePsi: 24.1,
+      vibrationMs2: 1.9,
+      voltageFluctuationPct: 3.8,
+      currentRipplePct: 7.2,
+    },
+    recommendedAction:
+      'Schedule preventative replacement of DC inverter capacitor array during off-peak maintenance window (2 AM - 5 AM).',
+    suggestedParts: ['1000V DC Film Capacitor Pack (1200uF)', 'HV Busbar Insulating Sleeve'],
+    status: 'active',
+    createdAt: 'Yesterday, 04:15 PM',
+  },
+  {
+    id: 'ALT-METRO-03',
+    stationId: 'STN-ECITY-01',
+    stationName: 'VoltGrid Electronic City Phase 1 Superhub',
+    portId: 'P5',
+    portNumber: 5,
+    component: 'CCS2 Connector Latch Lock Solenoid',
+    failureProbabilityPct: 48,
+    predictedTimeframe: 'Within 7-10 Days',
+    severity: 'Moderate',
+    rootCauseAnalysis:
+      'Solenoid lock actuation latency increased from 110ms to 420ms. Mechanical spring tension wear on plug retention jaw.',
+    sensorTelemetrySnapshot: {
+      junctionTempC: 45,
+      coolantPressurePsi: 27.8,
+      vibrationMs2: 1.2,
+      voltageFluctuationPct: 1.1,
+      currentRipplePct: 2.1,
+    },
+    recommendedAction:
+      'Inspect latch pin lubrication and align connector holster assembly during routine monthly technician check.',
+    suggestedParts: ['CCS2 Latch Locking Solenoid Kit', 'Silicone Dielectric Grease'],
+    status: 'active',
+    createdAt: 'Aug 07, 2026',
+  },
+];
+
+export const INITIAL_WORK_ORDERS: MaintenanceWorkOrder[] = [
+  {
+    id: 'WO-9801',
+    alertId: 'ALT-HW3-01',
+    stationId: 'STN-AIRPORT-KIA-04',
+    stationName: 'Kempegowda International Airport (BLR) Transit HyperCharger',
+    portId: 'HW3',
+    component: 'Liquid Coolant Pump Loop #2',
+    assignedTechnician: 'Alex Rivera (HV Certified)',
+    priority: 'Urgent',
+    scheduledTime: 'Today, 2:00 PM - 4:00 PM',
+    requiredParts: ['350kW Glycol Coolant Pump Mod', 'Viton O-Ring Set', 'Dielectric Coolant'],
+    status: 'Dispatched',
+    createdAt: 'Today, 09:00 AM',
+  },
+  {
+    id: 'WO-9742',
+    stationId: 'STN-PEENYA-05',
+    stationName: 'Peenya Industrial Logistics & Fleet Hub',
+    portId: 'EB8',
+    component: 'AC Contactor Arc Suppressor',
+    assignedTechnician: 'Samira Patel',
+    priority: 'Medium',
+    scheduledTime: 'Aug 10, 2026, 10:00 AM',
+    requiredParts: ['250A AC Contactor Module'],
+    status: 'In Progress',
+    createdAt: 'Aug 06, 2026',
+  },
+  {
+    id: 'WO-9650',
+    stationId: 'STN-WHITEFIELD-03',
+    stationName: 'Whitefield ITPL Tech Corridor Superhub',
+    portId: 'TP8',
+    component: 'Ground Isolation Fault Monitor',
+    assignedTechnician: 'Alex Rivera (HV Certified)',
+    priority: 'Low',
+    scheduledTime: 'Aug 04, 2026',
+    requiredParts: ['GFCI Sensing Board v3.2'],
+    status: 'Resolved',
+    resolutionNotes: 'Replaced sensing board and re-calibrated isolation resistance to >500 M-Ohm. Port verified fully operational.',
+    createdAt: 'Aug 03, 2026',
+  },
+];
+
+export const INITIAL_SENSOR_HISTORIES: SensorTelemetryHistoryPoint[] = [
+  { timestamp: '00:00', tempC: 38, coolantPsi: 28.2, vibrationMs2: 0.8, currentRipplePct: 1.2, inverterEfficiencyPct: 98.6 },
+  { timestamp: '04:00', tempC: 36, coolantPsi: 28.0, vibrationMs2: 0.7, currentRipplePct: 1.1, inverterEfficiencyPct: 98.8 },
+  { timestamp: '08:00', tempC: 52, coolantPsi: 26.4, vibrationMs2: 1.4, currentRipplePct: 2.1, inverterEfficiencyPct: 97.9 },
+  { timestamp: '12:00', tempC: 64, coolantPsi: 22.1, vibrationMs2: 2.2, currentRipplePct: 3.4, inverterEfficiencyPct: 96.5 },
+  { timestamp: '16:00', tempC: 72, coolantPsi: 14.2, vibrationMs2: 3.8, currentRipplePct: 5.8, inverterEfficiencyPct: 93.8 }, // Anomaly
+  { timestamp: '20:00', tempC: 61, coolantPsi: 18.5, vibrationMs2: 2.9, currentRipplePct: 4.2, inverterEfficiencyPct: 95.2 },
+  { timestamp: '23:00', tempC: 48, coolantPsi: 24.0, vibrationMs2: 1.8, currentRipplePct: 2.6, inverterEfficiencyPct: 97.1 },
+];
+
+export const INITIAL_ROLE_AUDIT_LOGS: RoleAuditLog[] = [
+  {
+    id: 'AUD-101',
+    timestamp: 'Today, 08:35 AM',
+    userRole: 'operator',
+    userName: 'Elena Rostova',
+    action: 'DISPATCH_WORK_ORDER',
+    resource: 'Kempegowda Airport HyperCharger (Port HW3)',
+    granted: true,
+  },
+  {
+    id: 'AUD-102',
+    timestamp: 'Today, 08:12 AM',
+    userRole: 'investor',
+    userName: 'Marcus Vance',
+    action: 'EXPORT_CAPEX_STATEMENT',
+    resource: 'Apex CleanTech Portfolio Yield',
+    granted: true,
+  },
+  {
+    id: 'AUD-103',
+    timestamp: 'Yesterday, 05:20 PM',
+    userRole: 'driver',
+    userName: 'Sophia Chen',
+    action: 'REMOTE_REBOOT_PORT',
+    resource: 'VoltGrid Electronic City (Port P1)',
+    granted: false, // Blocked by RBAC permission rules!
+  },
+];

@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VoltGrid - EV Station Management & Expansion</title>
+    <meta name="description" content="EV charging station planning with Vahan Dashboard EV ownership density scoring, real-time monitoring, predictive load management, investor analytics, and driver navigation." />
+    <meta property="og:title" content="VoltGrid - EV Station Management & Expansion" />
+    <meta property="og:description" content="EV charging station planning with Vahan Dashboard EV ownership density scoring, real-time monitoring, predictive load management, investor analytics, and driver navigation." />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script>
+      window.gm_authFailure = function() {
+        console.warn("Google Maps Authentication Failed - Invalid key or billing restriction detected.");
+        if (typeof window.__handleGmapsAuthFailure === 'function') {
+          window.__handleGmapsAuthFailure();
+        }
+      };
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
